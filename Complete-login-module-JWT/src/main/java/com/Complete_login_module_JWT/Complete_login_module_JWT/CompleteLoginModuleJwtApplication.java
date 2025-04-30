@@ -11,7 +11,7 @@ public class CompleteLoginModuleJwtApplication {
 	}
 	/*
 	git add .
-	git commit -m "Your message describing the changes"
+	git commit -m "updated code files "
 	git push
 	 */
 
