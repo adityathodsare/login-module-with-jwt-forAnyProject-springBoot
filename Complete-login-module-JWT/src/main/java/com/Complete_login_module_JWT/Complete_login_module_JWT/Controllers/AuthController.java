@@ -31,7 +31,7 @@ public class  AuthController {
     // register user to database
     @PostMapping("/register")
     public ResponseEntity<UserDTO> RegisterNormalUser(@RequestBody RegisterRequestDTO registerRequestDTO) {
-        return ResponseEntity.ok(authService.registerNormalUSer(registerRequestDTO));
+        return ResponseEntity.ok(authService.registerNormalUser(registerRequestDTO));
     }
 
     // log in the user ny credentials
