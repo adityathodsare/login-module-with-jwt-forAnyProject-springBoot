@@ -11,7 +11,7 @@ public class CompleteLoginModuleJwtApplication {
 	}
 	/*
 	git add .
-	git commit -m "updated code files "
+	git commit -m "auth controller updated "
 	git push
 	 */
 
