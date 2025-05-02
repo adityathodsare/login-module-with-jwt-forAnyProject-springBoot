@@ -2,14 +2,20 @@ package com.Complete_login_module_JWT.Complete_login_module_JWT.Entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Data
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
     @Id
     private  Long id;
     private  String username;
@@ -32,5 +38,10 @@ public class User {
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 }

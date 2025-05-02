@@ -7,7 +7,11 @@ import com.Complete_login_module_JWT.Complete_login_module_JWT.DTO.UserDTO;
 import com.Complete_login_module_JWT.Complete_login_module_JWT.Entity.User;
 import com.Complete_login_module_JWT.Complete_login_module_JWT.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +27,11 @@ public class AuthService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
 
     public UserDTO registerNormalUser(RegisterRequestDTO registerRequestDTO) {
         if(userRepository.findByUsername(registerRequestDTO.getUsername()).isPresent()) {
@@ -53,20 +62,36 @@ public class AuthService {
 
 
 
+    // with jwt login
+    public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
+        User user = userRepository.findByUsername(loginRequestDTO.getUsername())
+                .orElseThrow(()-> new RuntimeException("user not found invalid username "));
 
+        authenticationManager
+                .authenticate(
+                        new UsernamePasswordAuthenticationToken
+                                (loginRequestDTO.getUsername(), loginRequestDTO.getPassword()));
 
-
-
-
-
-
-
-
-    public static LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
-        return null;
+        String JWTtoken = JwtService.generateToken(user);
+        return  LoginResponseDTO.builder()
+                .JWTtoken(JWTtoken)
+                .userdto(convertToUserDTO(user))
+                .build();
     }
 
+
     public static ResponseEntity<String> logout() {
+        // create a expired cookiee
+        ResponseCookie cookie = ResponseCookie.from("jwt", "")
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(0)
+                .sameSite("strict")
+                .build();
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body("logout successfully ");
     }
 
 
