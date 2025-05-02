@@ -5,6 +5,7 @@ import com.Complete_login_module_JWT.Complete_login_module_JWT.DTO.LoginResponse
 import com.Complete_login_module_JWT.Complete_login_module_JWT.DTO.RegisterRequestDTO;
 import com.Complete_login_module_JWT.Complete_login_module_JWT.DTO.UserDTO;
 import com.Complete_login_module_JWT.Complete_login_module_JWT.Entity.User;
+import com.Complete_login_module_JWT.Complete_login_module_JWT.JWT.JwtService;
 import com.Complete_login_module_JWT.Complete_login_module_JWT.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -16,7 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Service
